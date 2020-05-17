@@ -1,0 +1,99 @@
+# Set the following environment variables before running `docker-compose up -d` command
+#
+# SYMFONY_STARTER_MYSQL_USER=symfony-starter
+# SYMFONY_STARTER_MYSQL_PASSWORD=symfony-starter-password
+# SYMFONY_STARTER_MYSQL_ROOT_PASSWORD=root-password
+# SYMFONY_STARTER_MYSQL_DATABASE=symfony-starter
+# SYMFONY_STARTER_MYSQL_HOST_PORT=33060
+# SYMFONY_STARTER_NGINX_HOST_HTTP_PORT=8081
+# SYMFONY_STARTER_NETWORK_SUBNET=192.168.222
+# SYMFONY_STARTER_XDEBUG_REMOTE_HOST=host.docker.internal (only for mac os and windows)
+
+version: '3.6'
+
+networks:
+    symfony-starter-network:
+        name: symfony-starter-network
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                -   subnet: "${SYMFONY_STARTER_NETWORK_SUBNET}.0/28"
+
+volumes:
+    symfony-starter-mysql-data:
+        name: symfony-starter-mysql-data
+        driver: local
+
+services:
+    symfony-starter-mysql:
+        build:
+            args:
+                APPLICATION_PATH: /var/www/symfony-starter
+                MYSQL_USER: ${SYMFONY_STARTER_MYSQL_USER}
+                MYSQL_PASSWORD: ${SYMFONY_STARTER_MYSQL_PASSWORD}
+                MYSQL_ROOT_PASSWORD: ${SYMFONY_STARTER_MYSQL_ROOT_PASSWORD}
+                MYSQL_DATABASE: ${SYMFONY_STARTER_MYSQL_DATABASE}
+            context: ./
+            dockerfile: build/mysql/Dockerfile
+        container_name: symfony-starter-mysql
+        networks:
+            symfony-starter-network:
+                ipv4_address: "${SYMFONY_STARTER_NETWORK_SUBNET}.2"
+        ports:
+            - ${SYMFONY_STARTER_MYSQL_HOST_PORT}:3306
+        restart: "no"
+        tty: true
+        volumes:
+            - ./:/var/www/symfony-starter/
+            - symfony-starter-mysql-data:/var/lib/mysql/
+            - ./var/log/mysql/:/var/log/mysql/
+
+    symfony-starter-php-fpm:
+        build:
+            args:
+                APP_ENV: dev
+                APPLICATION_PATH: /var/www/symfony-starter
+                NGINX_HOST_HTTP_PORT: ${SYMFONY_STARTER_NGINX_HOST_HTTP_PORT}
+                MYSQL_USER: ${SYMFONY_STARTER_MYSQL_USER}
+                MYSQL_PASSWORD: ${SYMFONY_STARTER_MYSQL_PASSWORD}
+                MYSQL_ROOT_PASSWORD: ${SYMFONY_STARTER_MYSQL_ROOT_PASSWORD}
+                MYSQL_DATABASE: ${SYMFONY_STARTER_MYSQL_DATABASE}
+                NETWORK_SUBNET: ${SYMFONY_STARTER_NETWORK_SUBNET}
+                XDEBUG_REMOTE_HOST: ${SYMFONY_STARTER_XDEBUG_REMOTE_HOST}
+            context: ./
+            dockerfile: build/php-fpm/Dockerfile
+        container_name: symfony-starter-php-fpm
+        depends_on:
+            - symfony-starter-mysql
+        expose:
+            - 9001
+        environment:
+            - "XDEBUG_CONFIG=remote_host=${SYMFONY_STARTER_XDEBUG_REMOTE_HOST} remote_enable=1"
+            - "PHP_IDE_CONFIG=serverName=localhost:${SYMFONY_STARTER_HOST_HTTP_PORT}"
+        networks:
+            symfony-starter-network:
+                ipv4_address: "${SYMFONY_STARTER_NETWORK_SUBNET}.3"
+        restart: "no"
+        tty: true
+        volumes:
+            - ./:/var/www/symfony-starter/
+            - ./var/log/php-fpm/:/var/log/php-fpm/
+
+    symfony-starter-nginx:
+        build:
+            context: ./
+            dockerfile: build/nginx/Dockerfile
+        container_name: symfony-starter-nginx
+        depends_on:
+            - symfony-starter-php-fpm
+        networks:
+            symfony-starter-network:
+                ipv4_address: "${SYMFONY_STARTER_NETWORK_SUBNET}.4"
+        ports:
+            - ${SYMFONY_STARTER_NGINX_HOST_HTTP_PORT}:80
+        restart: "no"
+        tty: true
+        volumes:
+            - ./:/var/www/symfony-starter/
+            - ./var/log/nginx/:/var/log/nginx/

@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Контакты | Symfony Starter {% endblock %}
+
+{% block body %}
+    <main role="main" style="margin-top: 30px">
+        <div class="container">
+            <div class="title_header">
+                <h3> Свяжитесь с нами через форму ниже </h3>
+            </div>
+
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            <form action="{{ url('route.contact.submit') }}" method="POST">
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label font-weight-bold" for="name">Имя</label>
+                    <div class="col-md-8">
+                        <input class="form-control" type="text" name="name" id="name" autocomplete="name" autofocus="">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label font-weight-bold" for="email">Email</label>
+                    <div class="col-md-8">
+                        <input class="form-control" type="text" name="email" id="email" autocomplete="email">
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label font-weight-bold" for="message">Пожалуйста, опишите проблему
+                        или ваше предложение</label>
+                    <div class="col-md-8">
+                        <textarea class="form-control" name="message" id="message" rows="7" autofocus="true"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="offset-md-2 col-md-8 p-1">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fa fa-envelope fa-sm"></i>&nbsp;&nbsp;Отправить
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+{% endblock %}

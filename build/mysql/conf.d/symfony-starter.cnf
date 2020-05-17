@@ -1,0 +1,10 @@
+[client]
+
+[mysqld_safe]
+
+[mysqld]
+default-authentication-plugin = mysql_native_password
+slow_query_log                = 1
+long_query_time               = 1
+
+[mysqldump]
