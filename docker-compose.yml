@@ -1,99 +1,99 @@
 # Set the following environment variables before running `docker-compose up -d` command
 #
-# SYMFONY_STARTER_MYSQL_USER=symfony-starter
-# SYMFONY_STARTER_MYSQL_PASSWORD=symfony-starter-password
-# SYMFONY_STARTER_MYSQL_ROOT_PASSWORD=root-password
-# SYMFONY_STARTER_MYSQL_DATABASE=symfony-starter
-# SYMFONY_STARTER_MYSQL_HOST_PORT=33060
-# SYMFONY_STARTER_NGINX_HOST_HTTP_PORT=8081
-# SYMFONY_STARTER_NETWORK_SUBNET=192.168.222
-# SYMFONY_STARTER_XDEBUG_REMOTE_HOST=host.docker.internal (only for mac os and windows)
+# EMPLOYER_CASHBOX_MYSQL_USER=employer-cashbox
+# EMPLOYER_CASHBOX_MYSQL_PASSWORD=employer-cashbox-password
+# EMPLOYER_CASHBOX_MYSQL_ROOT_PASSWORD=root-password
+# EMPLOYER_CASHBOX_MYSQL_DATABASE=employer-cashbox
+# EMPLOYER_CASHBOX_MYSQL_HOST_PORT=33060
+# EMPLOYER_CASHBOX_NGINX_HOST_HTTP_PORT=8081
+# EMPLOYER_CASHBOX_NETWORK_SUBNET=192.168.222
+# EMPLOYER_CASHBOX_XDEBUG_REMOTE_HOST=host.docker.internal (only for mac os and windows)
 
 version: '3.6'
 
 networks:
-    symfony-starter-network:
-        name: symfony-starter-network
+    employer-cashbox-network:
+        name: employer-cashbox-network
         driver: bridge
         ipam:
             driver: default
             config:
-                -   subnet: "${SYMFONY_STARTER_NETWORK_SUBNET}.0/28"
+                -   subnet: "${EMPLOYER_CASHBOX_NETWORK_SUBNET:-192.168.222}.0/28"
 
 volumes:
-    symfony-starter-mysql-data:
-        name: symfony-starter-mysql-data
+    employer-cashbox-mysql-data:
+        name: employer-cashbox-mysql-data
         driver: local
 
 services:
-    symfony-starter-mysql:
+    employer-cashbox-mysql:
         build:
             args:
-                APPLICATION_PATH: /var/www/symfony-starter
-                MYSQL_USER: ${SYMFONY_STARTER_MYSQL_USER}
-                MYSQL_PASSWORD: ${SYMFONY_STARTER_MYSQL_PASSWORD}
-                MYSQL_ROOT_PASSWORD: ${SYMFONY_STARTER_MYSQL_ROOT_PASSWORD}
-                MYSQL_DATABASE: ${SYMFONY_STARTER_MYSQL_DATABASE}
+                APPLICATION_PATH: /var/www/employer-cashbox
+                MYSQL_USER: ${EMPLOYER_CASHBOX_MYSQL_USER:-employer-cashbox}
+                MYSQL_PASSWORD: ${EMPLOYER_CASHBOX_MYSQL_PASSWORD:-employer-cashbox-password}
+                MYSQL_ROOT_PASSWORD: ${EMPLOYER_CASHBOX_MYSQL_ROOT_PASSWORD:-root-password}
+                MYSQL_DATABASE: ${EMPLOYER_CASHBOX_MYSQL_DATABASE:-employer-cashbox}
             context: ./
             dockerfile: build/mysql/Dockerfile
-        container_name: symfony-starter-mysql
+        container_name: employer-cashbox-mysql
         networks:
-            symfony-starter-network:
-                ipv4_address: "${SYMFONY_STARTER_NETWORK_SUBNET}.2"
+            employer-cashbox-network:
+                ipv4_address: "${EMPLOYER_CASHBOX_NETWORK_SUBNET:-192.168.222}.2"
         ports:
-            - ${SYMFONY_STARTER_MYSQL_HOST_PORT}:3306
+            - ${EMPLOYER_CASHBOX_MYSQL_HOST_PORT:-33060}:3306
         restart: "no"
         tty: true
         volumes:
-            - ./:/var/www/symfony-starter/
-            - symfony-starter-mysql-data:/var/lib/mysql/
+            - ./:/var/www/employer-cashbox/
+            - employer-cashbox-mysql-data:/var/lib/mysql/
             - ./var/log/mysql/:/var/log/mysql/
 
-    symfony-starter-php-fpm:
+    employer-cashbox-php-fpm:
         build:
             args:
                 APP_ENV: dev
-                APPLICATION_PATH: /var/www/symfony-starter
-                NGINX_HOST_HTTP_PORT: ${SYMFONY_STARTER_NGINX_HOST_HTTP_PORT}
-                MYSQL_USER: ${SYMFONY_STARTER_MYSQL_USER}
-                MYSQL_PASSWORD: ${SYMFONY_STARTER_MYSQL_PASSWORD}
-                MYSQL_ROOT_PASSWORD: ${SYMFONY_STARTER_MYSQL_ROOT_PASSWORD}
-                MYSQL_DATABASE: ${SYMFONY_STARTER_MYSQL_DATABASE}
-                NETWORK_SUBNET: ${SYMFONY_STARTER_NETWORK_SUBNET}
-                XDEBUG_REMOTE_HOST: ${SYMFONY_STARTER_XDEBUG_REMOTE_HOST}
+                APPLICATION_PATH: /var/www/employer-cashbox
+                NGINX_HOST_HTTP_PORT: ${EMPLOYER_CASHBOX_NGINX_HOST_HTTP_PORT:-8081}
+                MYSQL_USER: ${EMPLOYER_CASHBOX_MYSQL_USER:-employer-cashbox}
+                MYSQL_PASSWORD: ${EMPLOYER_CASHBOX_MYSQL_PASSWORD:-employer-cashbox-password}
+                MYSQL_ROOT_PASSWORD: ${EMPLOYER_CASHBOX_MYSQL_ROOT_PASSWORD:-root-password}
+                MYSQL_DATABASE: ${EMPLOYER_CASHBOX_MYSQL_DATABASE:-employer-cashbox}
+                NETWORK_SUBNET: ${EMPLOYER_CASHBOX_NETWORK_SUBNET:-192.168.222}
+                XDEBUG_REMOTE_HOST: ${EMPLOYER_CASHBOX_XDEBUG_REMOTE_HOST:-host.docker.internal}
             context: ./
             dockerfile: build/php-fpm/Dockerfile
-        container_name: symfony-starter-php-fpm
+        container_name: employer-cashbox-php-fpm
         depends_on:
-            - symfony-starter-mysql
+            - employer-cashbox-mysql
         expose:
             - 9001
         environment:
-            - "XDEBUG_CONFIG=remote_host=${SYMFONY_STARTER_XDEBUG_REMOTE_HOST} remote_enable=1"
-            - "PHP_IDE_CONFIG=serverName=localhost:${SYMFONY_STARTER_HOST_HTTP_PORT}"
+            - "XDEBUG_CONFIG=remote_host=${EMPLOYER_CASHBOX_XDEBUG_REMOTE_HOST:-host.docker-internal} remote_enable=1"
+            - "PHP_IDE_CONFIG=serverName=localhost:${EMPLOYER_CASHBOX_NGINX_HOST_HTTP_PORT:-8081}"
         networks:
-            symfony-starter-network:
-                ipv4_address: "${SYMFONY_STARTER_NETWORK_SUBNET}.3"
+            employer-cashbox-network:
+                ipv4_address: "${EMPLOYER_CASHBOX_NETWORK_SUBNET:-192.168.222}.3"
         restart: "no"
         tty: true
         volumes:
-            - ./:/var/www/symfony-starter/
+            - ./:/var/www/employer-cashbox/
             - ./var/log/php-fpm/:/var/log/php-fpm/
 
-    symfony-starter-nginx:
+    employer-cashbox-nginx:
         build:
             context: ./
             dockerfile: build/nginx/Dockerfile
-        container_name: symfony-starter-nginx
+        container_name: employer-cashbox-nginx
         depends_on:
-            - symfony-starter-php-fpm
+            - employer-cashbox-php-fpm
         networks:
-            symfony-starter-network:
-                ipv4_address: "${SYMFONY_STARTER_NETWORK_SUBNET}.4"
+            employer-cashbox-network:
+                ipv4_address: "${EMPLOYER_CASHBOX_NETWORK_SUBNET:-192.168.222}.4"
         ports:
-            - ${SYMFONY_STARTER_NGINX_HOST_HTTP_PORT}:80
+            - ${EMPLOYER_CASHBOX_NGINX_HOST_HTTP_PORT:-8081}:80
         restart: "no"
         tty: true
         volumes:
-            - ./:/var/www/symfony-starter/
+            - ./:/var/www/employer-cashbox/
             - ./var/log/nginx/:/var/log/nginx/

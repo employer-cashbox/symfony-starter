@@ -27,7 +27,7 @@ RUN QUERY="ALTER USER '${MYSQL_USER}'@'%' IDENTIFIED WITH mysql_native_password 
     && echo "${QUERY}" > /docker-entrypoint-initdb.d/user_change_password_plugin.sql
 
 # Копируем mysql-конфигурацию внутрь контейнера
-COPY ./build/mysql/conf.d/symfony-starter.cnf /etc/mysql/conf.d/symfony-starter.cnf
+COPY ./build/mysql/conf.d/employer-cashbox.cnf /etc/mysql/conf.d/employer-cashbox.cnf
 
 # Устанавливаем рабочую дирректорию
 WORKDIR /etc/mysql

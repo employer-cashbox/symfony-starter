@@ -11,7 +11,7 @@ RUN apt-get update     \
 
 # Копируем nginx-конфигурацию внутрь контейнера
 COPY ./build/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY ./build/nginx/conf.d/symfony-starter.conf /etc/nginx/conf.d/symfony-starter.conf
+COPY ./build/nginx/conf.d/employer-cashbox.conf /etc/nginx/conf.d/employer-cashbox.conf
 
 RUN rm /etc/nginx/conf.d/default.conf
 
