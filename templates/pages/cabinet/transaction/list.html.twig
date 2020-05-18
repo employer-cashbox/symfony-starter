@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %} Список транзакций {% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12 title_header">
+            <h3> Список транзакций </h3>
+            {% include 'includes/flash_messages.html.twig' %}
+        </div>
+    </div>
+
+    {# Table #}
+    <div class="row">
+        {% if transactionTotal == 0 %}
+            <h4>Список транзакций пока пуст.</h4>
+        {% else %}
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Идентификатор транзакции</th>
+                    <th scope="col">Название транзакции</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for transaction in transactionList %}
+                    <tr>
+                        <td>{{ transaction.id }}</td>
+                        <td>{{ transaction.name }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot class="bg-dark text-white">
+                <tr>
+                    <td colspan="2">Всего - {{ transactionTotal }}</td>
+                </tr>
+                </tfoot>
+            </table>
+
+            {# Pagination #}
+            {% if ((transactionTotal / elementOnPage)|round(0, 'ceil') > 1) %}
+                <div id="pagination-transaction-list"
+                     class="d-flex justify-content-center w-100"
+                     data-transaction-total="{{ transactionTotal }}"
+                     data-element-on-page="{{ elementOnPage }}"
+                     data-page="{{ page }}"
+                ></div>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}
+
+
+{% block javascripts %}
+    {% if ((transactionTotal / elementOnPage)|round(0, 'ceil') > 1) %}
+        <script src="{{ asset('js/jquery.bootpag.min.js') }}"></script>
+    {% endif %}
+    <script src="{{ asset('js/pages/cabinet/transaction/list.js') }}"></script>
+{% endblock %}

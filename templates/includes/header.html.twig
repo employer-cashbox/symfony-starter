@@ -26,12 +26,22 @@
                             Привет, {{ app.user.username }}!
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdown01">
-                            <a class="dropdown-item" href="{{ url('route.account.index') }}"> <span
-                                        class="fa fa-user"></span>&nbsp;&nbsp;Мой аккаунт</a>
-                            <a class="dropdown-item" href="{{ url('route.cabinet.index') }}"> <span
-                                        class="fa fa-user"></span>&nbsp;&nbsp;Мой кабинет</a>
-                            <a class="dropdown-item" href="{{ path('fos_user_security_logout') }}"> <span
-                                        class="fa fa-sign-out"></span>&nbsp;&nbsp Выйти</a>
+                            <a class="dropdown-item" href="{{ url('route.account.index') }}">
+                                <span class="fa fa-user"></span>
+                                &nbsp;&nbsp;Мой аккаунт
+                            </a>
+                            <a class="dropdown-item" href="{{ url('route.cabinet.product.list') }}">
+                                <span class="fa fa-list"></span>
+                                &nbsp;&nbsp;Список товаров
+                            </a>
+                            <a class="dropdown-item" href="{{ url('route.cabinet.transaction.list') }}">
+                                <span class="fa fa-list-alt"></span>
+                                &nbsp;&nbsp;Список транзакций
+                            </a>
+                            <a class="dropdown-item" href="{{ path('fos_user_security_logout') }}">
+                                <span class="fa fa-door-open"></span>
+                                &nbsp;&nbsp;Выйти
+                            </a>
                         </div>
                     </li>
 

@@ -53,10 +53,19 @@ class User extends BaseUser
      */
     private Collection $productList;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="user", orphanRemoval=true)
+     */
+    private Collection $transactionList;
+
+    /**
+     * User constructor.
+     */
     public function __construct()
     {
         parent::__construct();
         $this->productList = new ArrayCollection();
+        $this->transactionList = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -213,4 +222,42 @@ class User extends BaseUser
         return $this;
     }
 
+    /**
+     * @return Collection|Transaction[]
+     */
+    public function getTransactionList(): Collection
+    {
+        return $this->transactionList;
+    }
+
+    /**
+     * @param Transaction $transactionList
+     * @return $this
+     */
+    public function addTransactionList(Transaction $transactionList): self
+    {
+        if (!$this->transactionList->contains($transactionList)) {
+            $this->transactionList[] = $transactionList;
+            $transactionList->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Transaction $transactionList
+     * @return $this
+     */
+    public function removeTransactionList(Transaction $transactionList): self
+    {
+        if ($this->transactionList->contains($transactionList)) {
+            $this->transactionList->removeElement($transactionList);
+            // set the owning side to null (unless already changed)
+            if ($transactionList->getUser() === $this) {
+                $transactionList->setUser(null);
+            }
+        }
+
+        return $this;
+    }
 }

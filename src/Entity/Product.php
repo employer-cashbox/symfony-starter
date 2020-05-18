@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -47,6 +49,19 @@ class Product
      * @ORM\JoinColumn(nullable=false)
      */
     private ?User $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="transaction", orphanRemoval=true)
+     */
+    private Collection $transactionList;
+
+    /**
+     * Product constructor.
+     */
+    public function __construct()
+    {
+        $this->transactionList = new ArrayCollection();
+    }
 
     /**
      * @return int|null
@@ -109,6 +124,45 @@ class Product
     public function setUser(?User $user = null): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Transaction[]
+     */
+    public function getProductList(): Collection
+    {
+        return $this->transactionList;
+    }
+
+    /**
+     * @param Transaction $transactionList
+     * @return $this
+     */
+    public function addProductList(Transaction $transactionList): self
+    {
+        if (!$this->transactionList->contains($transactionList)) {
+            $this->transactionList[] = $transactionList;
+            $transactionList->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Transaction $transactionList
+     * @return $this
+     */
+    public function removeProductList(Transaction $transactionList): self
+    {
+        if ($this->transactionList->contains($transactionList)) {
+            $this->transactionList->removeElement($transactionList);
+            // set the owning side to null (unless already changed)
+            if ($transactionList->getProduct() === $this) {
+                $transactionList->setProduct(null);
+            }
+        }
 
         return $this;
     }

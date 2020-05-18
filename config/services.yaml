@@ -5,6 +5,8 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
+    transaction:
+        max_result_on_page: 10
     product:
         max_result_on_page: 10
 
