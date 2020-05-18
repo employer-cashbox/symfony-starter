@@ -5,7 +5,6 @@ namespace App\Controller\Cabinet;
 use App\Form\ProductType;
 use App\Service\ProductService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,23 +34,21 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/product/list", methods={"GET"}, name="route.product.list")
+     * Список товаров
+     * @Route("/cabinet/product/list", methods={"GET"}, name="route.cabinet.product.list")
      * @param Request $request
-     * @return JsonResponse
+     * @return Response
      */
-    public function list(Request $request)
+    public function list(Request $request): Response
     {
         $user = $this->getUser();
         $page = (int)$request->get('page', 1);
-
         $elementOnPage = $request->get('element_on_page', $this->getParameter('product')['max_result_on_page']);
 
         $productTotal = $this->productService->getTotal($user);
-
         $productList = $this->productService->getList($user, $page, $elementOnPage);
-        $productList = $this->serializer->serialize($productList, 'json');
 
-        return new JsonResponse([
+        return $this->render('pages/cabinet/product/list.html.twig', [
             'productTotal' => $productTotal,
             'productList' => $productList,
             'page' => $page,

@@ -63,10 +63,4 @@ security:
     - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/admin/, role: ROLE_ADMIN }
-    - { path: ^/cabinet, roles: ROLE_USER }
-    - { path: ^/account, roles: ROLE_USER }
-    - { path: /api/facebook, roles: ROLE_USER }
-    - { path: /api/github, roles: ROLE_USER }
-    - { path: /api/twitter, roles: ROLE_USER }
-    - { path: /api/linkedin, roles: ROLE_USER }
-    - { path: /api/instagram, roles: ROLE_USER }
+    - { path: ^/.+, roles: ROLE_USER }

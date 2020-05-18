@@ -28,6 +28,11 @@ class ProductNormalizer implements NormalizerInterface
         ];
     }
 
+    /**
+     * @param mixed $data
+     * @param null $format
+     * @return bool
+     */
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof Product;
