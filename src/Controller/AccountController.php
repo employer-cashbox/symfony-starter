@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
  * Created by PhpStorm.
  * User: webby
@@ -27,7 +28,7 @@ class AccountController extends AbstractController
     /**
      * @var AccountService
      */
-    private $accountService;
+    private AccountService $accountService;
 
     /**
      * AccountController constructor.
@@ -68,7 +69,7 @@ class AccountController extends AbstractController
      * @param Request $request
      * @return RedirectResponse
      */
-    public function changePassword(Request $request)
+    public function changePassword(Request $request): RedirectResponse
     {
         $userId = $this->getUser()->getId();
         try {
@@ -88,7 +89,7 @@ class AccountController extends AbstractController
      * @param Request $request
      * @return RedirectResponse
      */
-    public function delete(Request $request)
+    public function delete(Request $request): RedirectResponse
     {
         $user = $this->userRepository->find($this->getUser()->getId());
         $this->removeObject($user);
@@ -97,25 +98,5 @@ class AccountController extends AbstractController
         $session->clear();
 
         return $this->redirect('/');
-    }
-
-    /**
-     * Delete object from the database
-     * @param $object
-     */
-    public function removeObject($object)
-    {
-        $this->entityManager->remove($object);
-        $this->entityManager->flush();
-    }
-
-    /**
-     * Update the database
-     * @param $object
-     */
-    public function persistObject($object)
-    {
-        $this->entityManager->persist($object);
-        $this->entityManager->flush();
     }
 }

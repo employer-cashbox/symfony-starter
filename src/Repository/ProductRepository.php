@@ -1,10 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Repository;
 
 use App\Entity\Product;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @method Product|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,37 +17,44 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ProductRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    /** @var ContainerInterface */
+    private ContainerInterface $container;
+
+    /**
+     * ProductRepository constructor.
+     * @param ManagerRegistry $registry
+     * @param ContainerInterface $container
+     */
+    public function __construct(ManagerRegistry $registry, ContainerInterface $container)
     {
         parent::__construct($registry, Product::class);
+        $this->container = $container;
     }
 
-    // /**
-    //  * @return Product[] Returns an array of Product objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * Получить постранично список продуктов
+     * @param User $user
+     * @param int $page Номер странцы в списке
+     * @param int|null $elementsOnPage
+     * @return Product[]
+     */
+    public function getList(User $user, int $page, ?int $elementsOnPage = null): array
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        if (!$elementsOnPage) {
+            $elementsOnPage = $this->container->getParameter('product')['max_result_on_page'];
+        }
 
-    /*
-    public function findOneBySomeField($value): ?Product
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $offset = ($page - 1) * $elementsOnPage;
+
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select(['p'])
+            ->from(Product::class, 'p')
+            ->where('p.user = :userId')
+            ->setParameter('userId', $user->getId(), Types::INTEGER)
+            ->setFirstResult($offset)
+            ->setMaxResults($elementsOnPage)
+            ->getQuery();
+
+        return $query->getResult();
     }
-    */
 }

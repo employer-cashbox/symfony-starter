@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 
@@ -46,9 +48,15 @@ class User extends BaseUser
      */
     protected $providerId;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="user", orphanRemoval=true)
+     */
+    private Collection $productList;
+
     public function __construct()
     {
         parent::__construct();
+        $this->productList = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -164,6 +172,45 @@ class User extends BaseUser
     public function setProviderId($providerId): void
     {
         $this->providerId = $providerId;
+    }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getProductList(): Collection
+    {
+        return $this->productList;
+    }
+
+    /**
+     * @param Product $productList
+     * @return $this
+     */
+    public function addProductList(Product $productList): self
+    {
+        if (!$this->productList->contains($productList)) {
+            $this->productList[] = $productList;
+            $productList->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Product $productList
+     * @return $this
+     */
+    public function removeProductList(Product $productList): self
+    {
+        if ($this->productList->contains($productList)) {
+            $this->productList->removeElement($productList);
+            // set the owning side to null (unless already changed)
+            if ($productList->getUser() === $this) {
+                $productList->setUser(null);
+            }
+        }
+
+        return $this;
     }
 
 }

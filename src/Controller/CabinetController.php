@@ -9,9 +9,10 @@
 namespace App\Controller;
 
 
-use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\ProductService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -20,31 +21,37 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CabinetController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
-     * @var ObjectRepository
-     */
-    private $userRepository;
+    /** @var ProductService */
+    private ProductService $productService;
 
     /**
      * AccountController constructor.
-     * @param EntityManagerInterface $entityManager
+     * @param ProductService $productService
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(ProductService $productService)
     {
-        $this->entityManager = $entityManager;
-        $this->userRepository = $entityManager->getRepository('App:User');
+        $this->productService = $productService;
     }
 
     /**
      * @Route("/cabinet", name="route.cabinet.index")
+     * @param Request $request
+     * @return Response
      */
-    public function index()
+    public function index(Request $request): Response
     {
-        return $this->render('pages/cabinet/index.html.twig');
+        $user = $this->getUser();
+        $page = (int)$request->get('page', 1);
+        $elementOnPage = $request->get('element_on_page', $this->getParameter('product')['max_result_on_page']);
+
+        $productTotal = $this->productService->getTotal($user);
+        $productList = $this->productService->getList($user, $page, $elementOnPage);
+
+        return $this->render('pages/cabinet/index.html.twig', [
+            'productTotal' => $productTotal,
+            'productList' => $productList,
+            'page' => $page,
+            'elementOnPage' => $elementOnPage,
+        ]);
     }
 }

@@ -86,3 +86,48 @@ body {
 .social-wrapper {
     margin-top: 30px;
 }
+
+/* ==> Dropdown */
+.dropdown-item:focus, .dropdown-item:hover {
+    color: #16181b;
+    text-decoration: none;
+    background-color: #f8f9fa;
+}
+/* <== Dropdown */
+
+/* ==> Paginator */
+.page-item.disabled .page-link {
+    color: #b7bdc1;
+    pointer-events: none;
+    cursor: auto;
+    background-color: #fff;
+    border-color: #dee2e6;
+}
+
+.page-link {
+    position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #212529;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
+
+.page-link:hover {
+    z-index: 2;
+    color: #343a40;
+    text-decoration: none;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #343a40;
+    border-color: #212529;
+}
+
+/* <== Paginator */
