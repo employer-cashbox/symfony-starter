@@ -32,7 +32,7 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param User $user
+     * @param User  $user
      * @param array $userData
      * @return bool
      */
@@ -54,7 +54,7 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param User $user
+     * @param User   $user
      * @param string $encodePassword
      * @return bool
      */

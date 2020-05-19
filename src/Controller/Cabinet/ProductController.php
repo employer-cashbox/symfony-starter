@@ -26,7 +26,7 @@ class ProductController extends AbstractController
 
     /**
      * ProductController constructor.
-     * @param ProductService $productService
+     * @param ProductService      $productService
      * @param SerializerInterface $serializer
      */
     public function __construct(ProductService $productService, SerializerInterface $serializer)

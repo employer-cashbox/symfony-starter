@@ -29,7 +29,7 @@ class TransactionService
     /**
      * TransactionService constructor.
      * @param EntityManagerInterface $entityManager
-     * @param TransactionRepository $transactionRepository
+     * @param TransactionRepository  $transactionRepository
      */
     public function __construct(EntityManagerInterface $entityManager, TransactionRepository $transactionRepository)
     {
@@ -39,8 +39,8 @@ class TransactionService
 
     /**
      * Добавление товара
-     * @param Product $product
-     * @param Request $request
+     * @param Product       $product
+     * @param Request       $request
      * @param FormInterface $form
      * @return bool|void
      */
@@ -65,8 +65,8 @@ class TransactionService
     /**
      * Получить список товаров
      * @param User|UserInterface $user
-     * @param int|null $page
-     * @param int|null $elementOnPage
+     * @param int|null           $page
+     * @param int|null           $elementOnPage
      * @return Transaction[]
      */
     public function getList(User $user, int $page, ?int $elementOnPage = null)

@@ -104,6 +104,14 @@ body {
     border-color: #dee2e6;
 }
 
+.page-link:hover {
+    z-index: 2;
+    color: #343a40;
+    text-decoration: none;
+    background-color: #e9ecef;
+    border-color: #212529;
+}
+
 .page-link {
     position: relative;
     display: block;

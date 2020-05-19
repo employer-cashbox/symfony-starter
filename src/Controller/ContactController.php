@@ -1,10 +1,4 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: webby
- * Date: 14/10/2018
- * Time: 6:21 AM
- */
+<?php declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -43,7 +37,7 @@ class ContactController extends AbstractController
         $email = $request->get('email');
 
         $emailBody = $this->renderView('email/contact.html.twig', [
-            'name' => $name
+            'name' => $name,
         ]);
 
         $message = (new Swift_Message('Hello Email'))

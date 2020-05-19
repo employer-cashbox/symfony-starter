@@ -23,7 +23,7 @@ class TransactionController extends AbstractController
 
     /**
      * TransactionController constructor.
-     * @param TransactionService $transactionService
+     * @param TransactionService  $transactionService
      * @param SerializerInterface $serializer
      */
     public function __construct(TransactionService $transactionService, SerializerInterface $serializer)

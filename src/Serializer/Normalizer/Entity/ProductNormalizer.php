@@ -15,8 +15,8 @@ class ProductNormalizer implements NormalizerInterface
 {
     /**
      * @param Product $product
-     * @param null $format
-     * @param array $context
+     * @param null    $format
+     * @param array   $context
      * @return array
      */
     public function normalize($product, $format = null, array $context = []): array
@@ -30,7 +30,7 @@ class ProductNormalizer implements NormalizerInterface
 
     /**
      * @param mixed $data
-     * @param null $format
+     * @param null  $format
      * @return bool
      */
     public function supportsNormalization($data, $format = null)

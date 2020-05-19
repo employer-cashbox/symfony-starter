@@ -15,8 +15,8 @@ class TransactionNormalizer implements NormalizerInterface
 {
     /**
      * @param Transaction $transaction
-     * @param null $format
-     * @param array $context
+     * @param null        $format
+     * @param array       $context
      * @return array
      */
     public function normalize($transaction, $format = null, array $context = []): array
@@ -29,7 +29,7 @@ class TransactionNormalizer implements NormalizerInterface
 
     /**
      * @param mixed $data
-     * @param null $format
+     * @param null  $format
      * @return bool
      */
     public function supportsNormalization($data, $format = null)

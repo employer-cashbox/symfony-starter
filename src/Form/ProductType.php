@@ -18,7 +18,7 @@ class ProductType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -31,7 +31,7 @@ class ProductType extends AbstractType
                 'required' => true,
                 'attr' => [
                     'maxlength' => 255,
-                ]
+                ],
             ])
             ->add('price', NumberType::class, [
                 'help' => 'Введите дробное число больше нуля',
@@ -42,7 +42,7 @@ class ProductType extends AbstractType
                     'min' => '0.00',
                     'max' => '99999999.99',
                     'step' => '0.01',
-                ]
+                ],
             ]);
     }
 

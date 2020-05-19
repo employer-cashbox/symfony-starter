@@ -27,7 +27,7 @@ class AccountService
 
     /**
      * AccountService constructor.
-     * @param UserRepository $userRepository
+     * @param UserRepository               $userRepository
      * @param UserPasswordEncoderInterface $encoder
      */
     public function __construct(UserRepository $userRepository, UserPasswordEncoderInterface $encoder)
@@ -37,7 +37,7 @@ class AccountService
     }
 
     /**
-     * @param int $userId
+     * @param int     $userId
      * @param Request $request
      * @return void
      */
@@ -55,7 +55,7 @@ class AccountService
     }
 
     /**
-     * @param int $userId
+     * @param int     $userId
      * @param Request $request
      * @return bool
      * @throws NotEqualsPasswordException

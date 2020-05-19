@@ -22,7 +22,7 @@ class TransactionRepository extends ServiceEntityRepository
 
     /**
      * TransactionRepository constructor.
-     * @param ManagerRegistry $registry
+     * @param ManagerRegistry    $registry
      * @param ContainerInterface $container
      */
     public function __construct(ManagerRegistry $registry, ContainerInterface $container)
@@ -33,8 +33,8 @@ class TransactionRepository extends ServiceEntityRepository
 
     /**
      * Получить постранично список транзакций
-     * @param User $user
-     * @param int $page Номер странцы в списке
+     * @param User     $user
+     * @param int      $page Номер странцы в списке
      * @param int|null $elementsOnPage
      * @return Transaction[]
      */
