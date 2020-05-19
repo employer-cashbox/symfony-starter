@@ -1,18 +1,12 @@
 <?php
 
 use App\Kernel;
-use Symfony\Component\Debug\Debug;
-use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;
 
-require __DIR__ . '/../vendor/autoload.php';
+require dirname(__DIR__) . '/config/bootstrap.php';
 
-(new Dotenv())->load(__DIR__ . '/../.env');
-
-$env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? 'dev';
-$debug = (bool)($_SERVER['APP_DEBUG'] ?? $_ENV['APP_DEBUG'] ?? ('prod' !== $env));
-
-if ($debug) {
+if ($_SERVER['APP_DEBUG']) {
     umask(0000);
 
     Debug::enable();
@@ -23,10 +17,10 @@ if ($trustedProxies = $_SERVER['TRUSTED_PROXIES'] ?? $_ENV['TRUSTED_PROXIES'] ??
 }
 
 if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? $_ENV['TRUSTED_HOSTS'] ?? false) {
-    Request::setTrustedHosts(explode(',', $trustedHosts));
+    Request::setTrustedHosts([$trustedHosts]);
 }
 
-$kernel = new Kernel($env, $debug);
+$kernel = new Kernel($_SERVER['APP_ENV'], (bool)$_SERVER['APP_DEBUG']);
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();
