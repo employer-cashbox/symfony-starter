@@ -2,6 +2,8 @@
 
 namespace App\Controller\Cabinet;
 
+use App\Entity\Product;
+use App\Entity\User;
 use App\Form\ProductType;
 use App\Service\ProductService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -74,8 +76,40 @@ class ProductController extends AbstractController
             $this->addFlash('danger', 'Произошла ошибка при добавлении товара');
         }
 
-        return $this->render('pages/product/add.html.twig', [
+        return $this->render('pages/cabinet/product/add.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * Редактирование товара
+     * @Route("/cabinet/product/edit/{product<\d+>}", methods={"GET", "POST"}, name="route.cabinet.product.edit")
+     * @param Request $request
+     * @param Product $product
+     * @return Response
+     */
+    public function edit(Request $request, Product $product): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        if ($user->getId() !== $product->getUser()->getId()) {
+            throw $this->createNotFoundException("Товар с ID: {$product->getId()} не найден");
+        }
+
+        $initialProduct = clone $product;
+        $form = $this->createForm(ProductType::class, $product);
+
+        $result = $this->productService->edit($user, $request, $product, $form);
+        if ($result) {
+            $this->addFlash('success', 'Товар успешно изменен.');
+            return $this->redirectToRoute('route.cabinet.product.list');
+        } elseif ($result === false) {
+            $this->addFlash('danger', 'Произошла ошибка при редактировании товара');
+        }
+
+        return $this->render('pages/cabinet/product/edit.html.twig', [
+            'form' => $form->createView(),
+            'product' => $initialProduct,
         ]);
     }
 

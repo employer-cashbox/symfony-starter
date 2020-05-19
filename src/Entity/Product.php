@@ -6,11 +6,20 @@ use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
+ * @ORM\Table(
+ *     name="product",
+ *     uniqueConstraints={@ORM\UniqueConstraint(columns={"name", "user_id", "is_deleted"})}
+ * )
+ * @UniqueEntity(
+ *      fields={"name", "user", "isDeleted"},
+ *      message="У Вас уже есть товар с таким названием."
+ * )
  */
 class Product
 {
@@ -66,6 +75,7 @@ class Product
     public function __construct()
     {
         $this->transactionList = new ArrayCollection();
+        $this->isDeleted = false;
     }
 
     /**
@@ -126,7 +136,7 @@ class Product
      * @param bool|null $isDeleted
      * @return $this
      */
-    public function setDeleted(?bool $isDeleted = false): self
+    public function setIsDeleted(?bool $isDeleted = false): self
     {
         $this->isDeleted = $isDeleted;
 

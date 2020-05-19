@@ -7,15 +7,7 @@
         <div class="col-md-12 title_header">
             <h3> Добавить новый товар </h3>
 
-            {% for label, messages in app.flashes(['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'dark', 'light']) %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ label }} alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                                    aria-hidden="true">&times;</span></button>
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endfor %}
+            {% include 'includes/flash_messages.html.twig' %}
         </div>
 
         <div class="col-md-12">
@@ -87,7 +79,7 @@
                     {% endif %}
                 </div>
 
-                <button type="submit" class="btn btn-primary">Добавить</button>
+            <button type="submit" class="btn btn-outline-dark">Добавить</button>
 
             {{ form_end(form) }}
         </div>

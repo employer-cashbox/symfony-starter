@@ -27,6 +27,7 @@
     "symfony/swiftmailer-bundle": "^3.1",
     "symfony/translation": "4.*",
     "symfony/twig-bundle": "*",
+    "symfony/twig-pack": "^1.0",
     "symfony/validator": "*",
     "symfony/web-link": "*",
     "symfony/yaml": "*"

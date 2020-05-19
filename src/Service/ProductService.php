@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -38,12 +39,12 @@ class ProductService
 
     /**
      * Добавление товара
-     * @param UserInterface $user
-     * @param Request       $request
-     * @param FormInterface $form
+     * @param User|UserInterface $user
+     * @param Request            $request
+     * @param FormInterface      $form
      * @return bool|void
      */
-    public function add(UserInterface $user, Request $request, FormInterface $form)
+    public function add(User $user, Request $request, FormInterface $form)
     {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -58,6 +59,29 @@ class ProductService
             } catch (Exception $e) {
                 return false;
             }
+        }
+    }
+
+    /**
+     * Редактирование товара
+     * @param User|UserInterface $user
+     * @param Request            $request
+     * @param Product            $product
+     * @param FormInterface      $form
+     * @return bool|void
+     */
+    public function edit(User $user, Request $request, Product $product, FormInterface $form)
+    {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($user->getId() !== $product->getUser()->getId()) {
+                throw new NotFoundHttpException("Товар с ID: {$product->getId()} не найден");
+            }
+
+            return $this->productRepository->edit($product, [
+                'name' => $form->getData()->getName(),
+                'price' => $form->getData()->getPrice(),
+            ]);
         }
     }
 
@@ -82,6 +106,7 @@ class ProductService
     {
         return $this->productRepository->count([
             'user' => $user,
+            'isDeleted' => false,
         ]);
     }
 

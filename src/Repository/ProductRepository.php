@@ -6,7 +6,9 @@ use App\Entity\Product;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -20,15 +22,20 @@ class ProductRepository extends ServiceEntityRepository
     /** @var ContainerInterface */
     private ContainerInterface $container;
 
+    /** @var EntityManagerInterface */
+    private EntityManagerInterface $entityManager;
+
     /**
      * ProductRepository constructor.
-     * @param ManagerRegistry    $registry
-     * @param ContainerInterface $container
+     * @param ManagerRegistry        $registry
+     * @param ContainerInterface     $container
+     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(ManagerRegistry $registry, ContainerInterface $container)
+    public function __construct(ManagerRegistry $registry, ContainerInterface $container, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, Product::class);
         $this->container = $container;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -78,5 +85,25 @@ class ProductRepository extends ServiceEntityRepository
             ->setParameter('productId', $productId, Types::INTEGER)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * Изменить товар
+     * @param Product $product
+     * @param array   $newProductData
+     * @return bool
+     */
+    public function edit(Product $product, array $newProductData)
+    {
+        $product->setName($newProductData['name']);
+        $product->setPrice($newProductData['price']);
+
+        try {
+            $this->entityManager->persist($product);
+            $this->entityManager->flush();
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
     }
 }

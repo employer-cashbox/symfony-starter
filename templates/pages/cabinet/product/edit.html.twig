@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Редактирование товара "{{ product.name }}" {% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12 title_header">
+            <h3> Редактировать товар {{ product.name }}</h3>
+
+            {% include 'includes/flash_messages.html.twig' %}
+        </div>
+
+        <div class="col-md-12">
+            {{ form_start(form, {
+                'method': 'POST',
+                'action': url('route.cabinet.product.edit', {product: product.id})
+            }) }}
+
+            <div class="my-custom-class-for-errors">
+                {{ form_errors(form) }}
+            </div>
+
+            {# Название товара #}
+            <div class="form-group">
+                <span>{{ form_widget(form.id) }}</span>
+
+                {% if form.name.vars.errors|length > 0 %}
+                    {% set inputNameClass = 'form-control is-invalid' %}
+                {% else %}
+                    {% set inputNameClass = 'form-control' %}
+                {% endif %}
+
+                <span class="{{ form.name.vars.errors|length > 0 ? 'text-danger' : '' }}">
+                        {{ form_label(form.name, 'Название товара') }}
+                    </span>
+
+                {{ form_widget(form.name, {
+                    'attr': {
+                        'class': inputNameClass
+                    }
+                }) }}
+
+                {% if form.name.vars.errors|length > 0 %}
+                    <ul>
+                        {% for error in form.name.vars.errors %}
+                            <p class="form-text text-danger"><small>{{ error.message }}</small></p>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <small class="form-text text-muted">{{ form_help(form.name) }}</small>
+                {% endif %}
+            </div>
+
+            {# Цена #}
+            <div class="form-group">
+                {% if form.price.vars.errors|length > 0 %}
+                    {% set inputClassName = 'form-control is-invalid' %}
+                {% else %}
+                    {% set inputClassName = 'form-control' %}
+                {% endif %}
+
+                <span class="{{ form.price.vars.errors|length > 0 ? 'text-danger' : '' }}">
+                        {{ form_label(form.price, 'Цена') }}
+                    </span>
+
+                {{ form_widget(form.price, {
+                    'type': 'number',
+                    'value': form.vars.value.price|number_format(2, '.', ','),
+                    'attr': {
+                        'class': inputClassName
+                    },
+                }) }}
+
+                {% if form.price.vars.errors|length > 0 %}
+                    <ul>
+                        {% for error in form.price.vars.errors %}
+                            <p class="form-text text-danger"><small>{{ error.message }}</small></p>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <small class="form-text text-muted">{{ form_help(form.price) }}</small>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-outline-dark">Сохранить</button>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
