@@ -30,7 +30,7 @@ class Product
      * )
      * @Assert\Length(
      *      max = 255,
-     *      maxMessage = "Название продукта не должно превышать более {{ limit }} символов",
+     *      maxMessage = "Название товара не должно превышать более {{ limit }} символов",
      *      allowEmptyString = false
      * )
      */
@@ -45,11 +45,16 @@ class Product
     private ?float $price = 0.00;
 
     /**
+     * @ORM\Column(type="boolean")
+     * @var bool|null
+     */
+    private ?bool $isDeleted = false;
+
+    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="productList")
      * @ORM\JoinColumn(nullable=false)
      */
     private ?User $user;
-
     /**
      * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="transaction", orphanRemoval=true)
      */
@@ -105,6 +110,25 @@ class Product
     public function setPrice(?float $price = 0.00): self
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isDeleted(): ?bool
+    {
+        return $this->isDeleted;
+    }
+
+    /**
+     * @param bool|null $isDeleted
+     * @return $this
+     */
+    public function setDeleted(?bool $isDeleted = false): self
+    {
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }

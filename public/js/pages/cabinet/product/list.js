@@ -39,3 +39,36 @@ $(document).ready(function () {
         $('#pagination-product-list a').addClass('page-link');
     }
 });
+
+/**
+ * Событие удаление товара
+ * @param {Node} self
+ * @param {string} url
+ */
+function deleteProductEvent(self, url) {
+    let productId, productName, isDeleteProduct;
+
+    debugger;
+    productId = $(self).data('productId');
+    productName = $(self).data('productName');
+
+    isDeleteProduct = confirm(`Вы действительно хотите удалить товар "${productName}"?`);
+    if (isDeleteProduct) {
+        $.ajax({
+            url: url,
+            method: 'DELETE',
+            data: {
+                productIdList: [productId]
+            },
+            success: (response, status, XHR) => {
+                console.log(`Товар [${productId}: ${productName}] успешно удален.`, response);
+                debugger;
+                location.reload();
+            },
+            error: (XHR, status, errorMessage) => {
+                console.error('Ошибка получения ответа с сервера', XHR, status, errorMessage);
+                debugger;
+            }
+        });
+    }
+}

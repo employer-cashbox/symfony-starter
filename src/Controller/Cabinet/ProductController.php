@@ -78,4 +78,22 @@ class ProductController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * Удаление товара
+     * @Route("/cabinet/product/delete/{productId<\d+>}", methods={"GET"}, name="route.cabinet.product.delete")
+     * @param Request $request
+     * @return Response
+     */
+    public function delete(Request $request): Response
+    {
+        $user = $this->getUser();
+        $productId = (int)$request->get('productId');
+
+        $this->productService->delete($user, $productId)
+            ? $this->addFlash('success', 'Товар успешно удален.')
+            : $this->addFlash('danger', 'Товар не был удален. Возможно вы пытаетесь удалить несуществующий товар');
+
+        return $this->redirectToRoute('route.cabinet.product.list');
+    }
 }

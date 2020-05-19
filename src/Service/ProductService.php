@@ -28,7 +28,7 @@ class ProductService
     /**
      * ProductService constructor.
      * @param EntityManagerInterface $entityManager
-     * @param ProductRepository $productRepository
+     * @param ProductRepository      $productRepository
      */
     public function __construct(EntityManagerInterface $entityManager, ProductRepository $productRepository)
     {
@@ -39,7 +39,7 @@ class ProductService
     /**
      * Добавление товара
      * @param UserInterface $user
-     * @param Request $request
+     * @param Request       $request
      * @param FormInterface $form
      * @return bool|void
      */
@@ -64,8 +64,8 @@ class ProductService
     /**
      * Получить список товаров
      * @param User|UserInterface $user
-     * @param int|null $page
-     * @param int|null $elementOnPage
+     * @param int|null           $page
+     * @param int|null           $elementOnPage
      * @return Product[]
      */
     public function getList(User $user, int $page, ?int $elementOnPage = null)
@@ -83,5 +83,16 @@ class ProductService
         return $this->productRepository->count([
             'user' => $user,
         ]);
+    }
+
+    /**
+     * Удалить товар
+     * @param User|UserInterface $user
+     * @param int                $productId
+     * @return int Количество удленных товаров
+     */
+    public function delete(User $user, int $productId)
+    {
+        return $this->productRepository->delete($user, $productId);
     }
 }

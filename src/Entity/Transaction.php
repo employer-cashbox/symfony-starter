@@ -28,7 +28,7 @@ class Transaction
      * )
      * @Assert\Length(
      *      max = 255,
-     *      maxMessage = "Название продукта не должно превышать более {{ limit }} символов",
+     *      maxMessage = "Название транзакции не должно превышать более {{ limit }} символов",
      *      allowEmptyString = false
      * )
      */

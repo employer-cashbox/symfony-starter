@@ -27,6 +27,7 @@
                 <tr>
                     <th scope="col">Название товара</th>
                     <th scope="col">Цена</th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -34,12 +35,30 @@
                     <tr>
                         <td>{{ product.name }}</td>
                         <td>{{ product.price }}</td>
+                        <td class="d-flex justify-content-end">
+                            <a href="{{ url('route.cabinet.product.edit', {productId: product.id}) }}"
+                               class="btn btn-sm btn-outline-dark ml-2"
+                            >
+                                <i class="fa fa-edit fa-sm"></i>
+                            </a>
+
+                            {% set deleteProductUrl = url('route.api.cabinet.product.delete', {productId: product.id})|escape %}
+                            <a href="{{ url('route.cabinet.product.delete', {productId: product.id}) }}"
+                               class="btn btn-sm btn-outline-danger ml-2"
+                               type="button"
+                               data-product-id="{{ product.id }}"
+                               data-product-name="{{ product.name }}"
+                               onclick="deleteProductEvent(this, '{{ deleteProductUrl }}'); return false;"
+                            >
+                                <i class="fa fa-trash-alt fa-sm"></i>
+                            </a>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
                 <tfoot class="bg-dark text-white">
                 <tr>
-                    <td colspan="2">Всего - {{ productTotal }}</td>
+                    <td colspan="3">Всего - {{ productTotal }}</td>
                 </tr>
                 </tfoot>
             </table>
