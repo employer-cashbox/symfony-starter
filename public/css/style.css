@@ -93,6 +93,19 @@ body {
     text-decoration: none;
     background-color: #f8f9fa;
 }
+
+.dropdown-item:focus, .dropdown-item:hover {
+    color: #16181b;
+    text-decoration: none;
+    background-color: #eee;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    color: #eee;
+    text-decoration: none;
+    background-color: #16181b;
+}
+
 /* <== Dropdown */
 
 /* ==> Paginator */
@@ -108,7 +121,7 @@ body {
     z-index: 2;
     color: #343a40;
     text-decoration: none;
-    background-color: #e9ecef;
+    background-color: #eee;
     border-color: #212529;
 }
 
@@ -127,7 +140,7 @@ body {
     z-index: 2;
     color: #343a40;
     text-decoration: none;
-    background-color: #e9ecef;
+    background-color: #eee;
     border-color: #dee2e6;
 }
 
