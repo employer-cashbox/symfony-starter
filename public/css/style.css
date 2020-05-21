@@ -20,6 +20,7 @@ body {
     --input-padding-y: .75rem;
 }
 
+/* ==> Form */
 .form-signin {
     width: 100%;
     max-width: 420px;
@@ -86,6 +87,16 @@ body {
 .social-wrapper {
     margin-top: 30px;
 }
+
+.form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #16181b;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, .25);
+}
+
+/* <== Form */
 
 /* ==> Dropdown */
 .dropdown-item:focus, .dropdown-item:hover {

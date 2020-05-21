@@ -45,6 +45,11 @@
                                 <span class="fa fa-user"></span>
                                 &nbsp;&nbsp;Мой аккаунт
                             </a>
+                            <a class="dropdown-item {{ app.request.get('_route') == 'route.cabinet.robokassa.settings' ? 'active' : '' }}"
+                               href="{{ url('route.cabinet.robokassa.settings') }}">
+                                <span class="fa fa-robot"></span>
+                                &nbsp;&nbsp;Настройка Robokassa
+                            </a>
                             <a class="dropdown-item {{ app.request.get('_route') == 'route.cabinet.product.list' ? 'active' : '' }}"
                                href="{{ url('route.cabinet.product.list') }}">
                                 <span class="fa fa-list"></span>

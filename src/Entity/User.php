@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -57,6 +57,11 @@ class User extends BaseUser
      * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="user", orphanRemoval=true)
      */
     private Collection $transactionList;
+
+    /**
+     * @ORM\OneToOne(targetEntity=RobokassaSettings::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private ?RobokassaSettings $robokassaSettings;
 
     /**
      * User constructor.
@@ -256,6 +261,30 @@ class User extends BaseUser
             if ($transactionList->getUser() === $this) {
                 $transactionList->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return RobokassaSettings|null
+     */
+    public function getRobokassaSettings(): ?RobokassaSettings
+    {
+        return $this->robokassaSettings;
+    }
+
+    /**
+     * @param RobokassaSettings $robokassaSettings
+     * @return $this
+     */
+    public function setRobokassaSettings(RobokassaSettings $robokassaSettings): self
+    {
+        $this->robokassaSettings = $robokassaSettings;
+
+        // set the owning side of the relation if necessary
+        if ($robokassaSettings->getUser() !== $this) {
+            $robokassaSettings->setUser($this);
         }
 
         return $this;
