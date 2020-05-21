@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 
@@ -18,9 +17,6 @@ use Exception;
  */
 class UserRepository extends ServiceEntityRepository
 {
-    /** @var EntityManager */
-    private $entityManager;
-
     /**
      * UserRepository constructor.
      * @param ManagerRegistry $registry
@@ -28,7 +24,6 @@ class UserRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
-        $this->entityManager = $this->getEntityManager();
     }
 
     /**
@@ -38,14 +33,15 @@ class UserRepository extends ServiceEntityRepository
      */
     public function save(User $user, array $userData): bool
     {
+        $user->setEmail($userData['email']);
+        $user->setFirstName($userData['first_name']);
+        $user->setLastName($userData['last_name']);
+        $user->setLocation($userData['location']);
+        $user->setWebsite($userData['website']);
+
         try {
-            $user->setEmail($userData['email']);
-            $user->setFirstName($userData['first_name']);
-            $user->setLastName($userData['last_name']);
-            $user->setLocation($userData['location']);
-            $user->setWebsite($userData['website']);
-            $this->entityManager->persist($user);
-            $this->entityManager->flush();
+            $this->getEntityManager()->persist($user);
+            $this->getEntityManager()->flush();
 
             return true;
         } catch (Exception $e) {
@@ -62,8 +58,8 @@ class UserRepository extends ServiceEntityRepository
     {
         try {
             $user->setPassword($encodePassword);
-            $this->entityManager->persist($user);
-            $this->entityManager->flush();
+            $this->getEntityManager()->persist($user);
+            $this->getEntityManager()->flush();
 
             return true;
         } catch (Exception $e) {

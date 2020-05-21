@@ -80,6 +80,7 @@ class ProductService
 
             return $this->productRepository->edit($product, [
                 'name' => $form->getData()->getName(),
+                'description' => $form->getData()->getDescription(),
                 'price' => $form->getData()->getPrice(),
             ]);
         }

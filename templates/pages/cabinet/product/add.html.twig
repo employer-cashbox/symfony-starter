@@ -20,12 +20,14 @@
                     {{ form_errors(form) }}
                 </div>
 
+                {###################}
                 {# Название товара #}
+            {###################}
                 <div class="form-group">
                     {% if form.name.vars.errors|length > 0 %}
-                        {% set inputNameClass = 'form-control is-invalid' %}
+                        {% set inputClass = 'form-control is-invalid' %}
                     {% else %}
-                        {% set inputNameClass = 'form-control' %}
+                        {% set inputClass = 'form-control' %}
                     {% endif %}
 
                     <span class="{{ form.name.vars.errors|length > 0 ? 'text-danger' : '' }}">
@@ -34,7 +36,7 @@
 
                     {{ form_widget(form.name, {
                         'attr': {
-                            'class': inputNameClass
+                            'class': inputClass
                         }
                     }) }}
 
@@ -49,22 +51,55 @@
                     {% endif %}
                 </div>
 
-                {# Цена #}
-                <div class="form-group">
-                    {% if form.price.vars.errors|length > 0 %}
-                        {% set inputClassName = 'form-control is-invalid' %}
-                    {% else %}
-                        {% set inputClassName = 'form-control' %}
-                    {% endif %}
+            {###################}
+            {# Описание товара #}
+            {###################}
+            <div class="form-group">
+                {% if form.description.vars.errors|length > 0 %}
+                    {% set inputClass = 'form-control is-invalid' %}
+                {% else %}
+                    {% set inputClass = 'form-control' %}
+                {% endif %}
 
-                    <span class="{{ form.price.vars.errors|length > 0 ? 'text-danger' : '' }}">
+                <span class="{{ form.description.vars.errors|length > 0 ? 'text-danger' : '' }}">
+                        {{ form_label(form.description, 'Название товара') }}
+                    </span>
+
+                {{ form_widget(form.description, {
+                    'attr': {
+                        'class': inputClass
+                    }
+                }) }}
+
+                {% if form.description.vars.errors|length > 0 %}
+                    <ul>
+                        {% for error in form.description.vars.errors %}
+                            <p class="form-text text-danger"><small>{{ error.message }}</small></p>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <small class="form-text text-muted">{{ form_help(form.description) }}</small>
+                {% endif %}
+            </div>
+
+            {########}
+            {# Цена #}
+            {########}
+            <div class="form-group">
+                {% if form.price.vars.errors|length > 0 %}
+                    {% set inputClass = 'form-control is-invalid' %}
+                {% else %}
+                    {% set inputClass = 'form-control' %}
+                {% endif %}
+
+                <span class="{{ form.price.vars.errors|length > 0 ? 'text-danger' : '' }}">
                         {{ form_label(form.price, 'Цена') }}
                     </span>
 
                     {{ form_widget(form.price, {
                         'type': 'number',
                         'attr': {
-                            'class': inputClassName
+                            'class': inputClass
                         }
                     }) }}
 

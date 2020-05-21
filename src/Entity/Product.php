@@ -31,6 +31,7 @@ class Product
     private ?int $id;
 
     /**
+     * Название товара
      * @ORM\Column(type="string", length=255)
      * @Assert\Regex(
      *     pattern = "/^[0-9А-яЁёA-z-._ ]+$/i",
@@ -47,6 +48,14 @@ class Product
     private ?string $name = null;
 
     /**
+     * Описание товара
+     * @ORM\Column(type="text", nullable=true)
+     * @var string|null
+     */
+    private ?string $description = null;
+
+    /**
+     * Цена
      * @ORM\Column(type="decimal", precision=10, scale=2)
      * @Assert\Positive(
      *      message = "Значение должно быть положительным числом (больше нуля)",
@@ -55,17 +64,21 @@ class Product
     private ?float $price = 0.00;
 
     /**
+     * Удален ли продукт
      * @ORM\Column(type="boolean")
      * @var bool|null
      */
     private ?bool $isDeleted = false;
 
     /**
+     * Пользователь зарегистрированный в системе
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="productList")
      * @ORM\JoinColumn(nullable=false)
      */
     private ?User $user;
+
     /**
+     * Список транзакций по текущему продукту
      * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="transaction", orphanRemoval=true)
      */
     private Collection $transactionList;
@@ -102,6 +115,25 @@ class Product
     public function setName(?string $name = null): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string|null $description
+     * @return $this
+     */
+    public function setDescription(?string $description = null): self
+    {
+        $this->description = $description;
 
         return $this;
     }

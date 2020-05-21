@@ -92,4 +92,14 @@ class AccountController extends AbstractController
 
         return $this->redirect('/');
     }
+
+    /**
+     * @Route("/account/robokassa", methods={"GET"}, name="route.account.robokassa")
+     * @param Request $request
+     * @return Response
+     */
+    public function robokassaSettings(Request $request): Response
+    {
+        return $this->render('pages/account/robokassa.html.twig');
+    }
 }

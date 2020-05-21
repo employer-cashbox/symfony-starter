@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Form;
 
@@ -6,6 +6,7 @@ use App\Entity\Product;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -32,6 +33,10 @@ class ProductType extends AbstractType
                 'attr' => [
                     'maxlength' => 255,
                 ],
+            ])
+            ->add('description', TextareaType::class, [
+                'help' => 'Введите описание товара',
+                'required' => false,
             ])
             ->add('price', NumberType::class, [
                 'help' => 'Введите дробное число больше нуля',
