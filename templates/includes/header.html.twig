@@ -47,7 +47,7 @@
                         Привет, {{ app.user.username }}!
                     </a>
 
-                    <div class="dropdown-menu" aria-labelledby="dropdown01">
+                    <div class="dropdown-menu" aria-labelledby="dropdown01" style="left: -75px;">
                         {% set links = [
                             {name: 'Мой аккаунт', route: 'route.account.index', icon: 'fa fa-user'},
                             {name: 'Настройка Robokassa', route: 'route.cabinet.robokassa.settings', icon: 'fa fa-robot'},
