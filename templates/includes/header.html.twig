@@ -1,5 +1,7 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Логотип сайта</a>
+    <a class="navbar-brand" href="{{ url('route.index.index') }}" style="padding:0; margin:0;">
+        <img src="{{ asset('/images/logo.svg') }}" alt="logo" style="width: 50px">
+    </a>
 
     <button class="navbar-toggler"
             type="button"
@@ -17,9 +19,13 @@
 
             {% set links = [
                 {name: 'Главная', route: 'route.index.index'},
-                {name: 'Контакты', route: 'route.contact.index'},
-                {name: 'Как начать?', route: 'route.index.how_to_start'}
+                {name: 'Контакты', route: 'route.contact.index'}
             ] %}
+
+            {% if app.user %}
+                {% set links = links|merge([{name: 'Как начать?', route: 'route.index.how_to_start'}]) %}
+            {% endif %}
+
             {% for link in links %}
                 <li class="nav-item {{ app.request.get('_route') == link.route ? 'active' : '' }}">
                     <a class="nav-link" href="{{ url(link.route) }}">{{ link.name }}</a>
