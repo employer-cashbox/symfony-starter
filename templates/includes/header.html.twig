@@ -33,51 +33,49 @@
             {% endfor %}
         </ul>
 
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault" style="padding-right: 70px;">
-            <ul class="navbar-nav ml-auto">
+        <ul class="navbar-nav ml-auto">
 
-                {% if app.user %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle"
-                           href="#"
-                           id="dropdown01"
-                           data-toggle="dropdown"
-                           aria-haspopup="true"
-                           aria-expanded="false"
-                        >
-                            Привет, {{ app.user.username }}!
-                        </a>
+            {% if app.user %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle"
+                       href="#"
+                       id="dropdown01"
+                       data-toggle="dropdown"
+                       aria-haspopup="true"
+                       aria-expanded="false"
+                    >
+                        Привет, {{ app.user.username }}!
+                    </a>
 
-                        <div class="dropdown-menu" aria-labelledby="dropdown01">
-                            {% set links = [
-                                {name: 'Мой аккаунт', route: 'route.account.index', icon: 'fa fa-user'},
-                                {name: 'Настройка Robokassa', route: 'route.cabinet.robokassa.settings', icon: 'fa fa-robot'},
-                                {name: 'Список товаров', route: 'route.cabinet.product.list', icon: 'fa fa-list'},
-                                {name: 'Список транзакций', route: 'route.cabinet.transaction.list', icon: 'fa fa-list-alt'},
-                                {name: 'Выйти', route: 'fos_user_security_logout', icon: 'fa fa-door-open'},
-                            ] %}
-                            {% for link in links %}
-                                <a class="dropdown-item {{ app.request.get('_route') == link.route ? 'active' : '' }}"
-                                   href="{{ url(link.route) }}">
-                                    <span class="{{ link.icon }}"></span>
-                                    &nbsp;&nbsp;{{ link.name }}
-                                </a>
-                            {% endfor %}
-                        </div>
+                    <div class="dropdown-menu" aria-labelledby="dropdown01">
+                        {% set links = [
+                            {name: 'Мой аккаунт', route: 'route.account.index', icon: 'fa fa-user'},
+                            {name: 'Настройка Robokassa', route: 'route.cabinet.robokassa.settings', icon: 'fa fa-robot'},
+                            {name: 'Список товаров', route: 'route.cabinet.product.list', icon: 'fa fa-list'},
+                            {name: 'Список транзакций', route: 'route.cabinet.transaction.list', icon: 'fa fa-list-alt'},
+                            {name: 'Выйти', route: 'fos_user_security_logout', icon: 'fa fa-door-open'},
+                        ] %}
+                        {% for link in links %}
+                            <a class="dropdown-item {{ app.request.get('_route') == link.route ? 'active' : '' }}"
+                               href="{{ url(link.route) }}">
+                                <span class="{{ link.icon }}"></span>
+                                &nbsp;&nbsp;{{ link.name }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </li>
+            {% else %}
+                {% set links = [
+                    {name: 'Войти', route: 'fos_user_security_login'},
+                    {name: 'Создать аккаунт', route: 'fos_user_registration_register'},
+                ] %}
+                {% for link in links %}
+                    <li class="nav-item {{ app.request.get('_route') == link.route ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ path(link.route) }}"> {{ link.name }} </a>
                     </li>
-                {% else %}
-                    {% set links = [
-                        {name: 'Войти', route: 'fos_user_security_login'},
-                        {name: 'Создать аккаунт', route: 'fos_user_registration_register'},
-                    ] %}
-                    {% for link in links %}
-                        <li class="nav-item {{ app.request.get('_route') == link.route ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ path(link.route) }}"> {{ link.name }} </a>
-                        </li>
-                    {% endfor %}
-                {% endif %}
-            </ul>
-        </div>
+                {% endfor %}
+            {% endif %}
+        </ul>
         {#</form>#}
     </div>
 </nav>
