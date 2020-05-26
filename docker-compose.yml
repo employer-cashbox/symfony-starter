@@ -52,7 +52,7 @@ services:
     employer-cashbox-php-fpm:
         build:
             args:
-                APP_ENV: ${EMPLOYER_CASHBOX_APP_ENVIRONMENT:-production}
+                APP_ENV: ${EMPLOYER_CASHBOX_APP_ENVIRONMENT:-prod}
                 APPLICATION_PATH: /var/www/employer-cashbox
                 NGINX_HOST_HTTP_PORT: ${EMPLOYER_CASHBOX_NGINX_HOST_HTTP_PORT:-80}
                 MYSQL_USER: ${EMPLOYER_CASHBOX_MYSQL_USER:-employer-cashbox}
