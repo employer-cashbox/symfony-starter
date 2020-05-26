@@ -62,7 +62,7 @@
                 {% endif %}
 
                 <span class="{{ form.description.vars.errors|length > 0 ? 'text-danger' : '' }}">
-                        {{ form_label(form.description, 'Название товара') }}
+                        {{ form_label(form.description, 'Описание товара') }}
                     </span>
 
                 {{ form_widget(form.description, {
@@ -82,9 +82,9 @@
                 {% endif %}
             </div>
 
-            {########}
-            {# Цена #}
-            {########}
+            {#################}
+            {# Цена в рублях #}
+            {#################}
             <div class="form-group">
                 {% if form.price.vars.errors|length > 0 %}
                     {% set inputClass = 'form-control is-invalid' %}
@@ -93,7 +93,7 @@
                 {% endif %}
 
                 <span class="{{ form.price.vars.errors|length > 0 ? 'text-danger' : '' }}">
-                        {{ form_label(form.price, 'Цена') }}
+                        {{ form_label(form.price, 'Цена в рублях') }}
                     </span>
 
                     {{ form_widget(form.price, {
@@ -112,9 +112,11 @@
                     {% else %}
                         <small class="form-text text-muted">{{ form_help(form.price) }}</small>
                     {% endif %}
-                </div>
+            </div>
 
             <button type="submit" class="btn btn-outline-dark">Добавить</button>
+            <br>
+            <small class="text-muted">Код конопки можно будет посмотреть при редактировании товара</small>
 
             {{ form_end(form) }}
         </div>

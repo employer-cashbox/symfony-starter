@@ -2,7 +2,10 @@
 
 namespace App\Service;
 
+use App\Entity\Product;
 use App\Entity\User;
+use App\Exception\UserDoesNotHaveThisProductException;
+use App\Repository\ProductRepository;
 use App\Repository\RobokassaSettingsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
@@ -21,15 +24,20 @@ class RobokassaService
     /** @var RobokassaSettingsRepository */
     private RobokassaSettingsRepository $robokassaRepository;
 
+    /** @var ProductRepository */
+    private ProductRepository $productRepository;
+
     /**
      * RobokassaService constructor.
      * @param EntityManagerInterface      $entityManager
      * @param RobokassaSettingsRepository $robokassaRepository
+     * @param ProductRepository           $productRepository
      */
-    public function __construct(EntityManagerInterface $entityManager, RobokassaSettingsRepository $robokassaRepository)
+    public function __construct(EntityManagerInterface $entityManager, RobokassaSettingsRepository $robokassaRepository, ProductRepository $productRepository)
     {
         $this->entityManager = $entityManager;
         $this->robokassaRepository = $robokassaRepository;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -51,5 +59,55 @@ class RobokassaService
                 'invoiceId' => $form->getData()->getInvoiceId(),
             ]);
         }
+    }
+
+    /**
+     * Генерация URL для кнопки
+     * @param User|UserInterface $user
+     * @param int                $productId
+     * @return string
+     * @throws UserDoesNotHaveThisProductException
+     */
+    public function generateUrl(User $user, int $productId)
+    {
+        /** @var Product $product */
+        $product = $this->productRepository->find($productId);
+        $robokassaSettings = $user->getRobokassaSettings();
+        $code = $this->generateHashCode($user, $product);
+
+        $url = 'https://auth.robokassa.ru/Merchant/Index.aspx';
+        $queryParams = [
+            'MerchantLogin' => $robokassaSettings->getSiteIdentity(),
+            'OutSum' => $product->getPrice(),
+            'InvId' => $robokassaSettings->getInvoiceId(),
+            'Description' => $product->getName(),
+            'SignatureValue' => $code,
+        ];
+
+        return $url . '?' . http_build_query($queryParams);
+    }
+
+    /**
+     * Генерация хеш-кода для кнопки
+     * @param User|UserInterface $user
+     * @param Product            $product
+     * @return string
+     * @throws UserDoesNotHaveThisProductException
+     */
+    public function generateHashCode(User $user, Product $product)
+    {
+
+        if (!$product || $product->getUser()->getId() !== $user->getId()) {
+            throw new UserDoesNotHaveThisProductException();
+        }
+
+        $robokassaSettings = $user->getRobokassaSettings();
+
+        $login = $robokassaSettings->getSiteIdentity();
+        $summ = $product->getPrice();
+        $invId = $robokassaSettings->getInvoiceId();
+        $password1 = $robokassaSettings->getPassword1();
+
+        return md5("{$login}:{$summ}:{$invId}:{$password1}");
     }
 }

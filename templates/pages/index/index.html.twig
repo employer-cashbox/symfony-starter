@@ -3,65 +3,58 @@
 {% block title %} Symfony Starter {% endblock %}
 
 {% block body %}
-    <div class="jumbotron">
-        <div class="container">
-            <h1 class="display-3"> Symfony Starter</h1>
-            <p>This is a boilerplate for Symfony web applications.
-                It includes social authentication using some of the most popular social platform
-                . Use it as a starting point to create something more unique
-            </p>
-            <p><a class="btn btn-primary btn-lg" href="https://github.com/Lancer-Serega/symfony-starter"
-                  role="button" target="_blank">Learn more &raquo;</a></p>
-        </div>
-    </div>
-
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
-                <h2>Heading</h2>
-                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor
-                    mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada
-                    magna mollis euismod. Donec sed odio dui. </p>
-                <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+            <div class="col-1"></div>
+            <div id="logo" class="col-10 mb-4">
+                <img src="{{ asset('/images/logo.jpg') }}" alt="logo">
             </div>
-            <div class="col-md-4">
-                <h2>Heading</h2>
-                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor
-                    mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada
-                    magna mollis euismod. Donec sed odio dui. </p>
-                <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-            </div>
-            <div class="col-md-4">
-                <h2>Heading</h2>
-                <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id
-                    ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris
-                    condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-                <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-            </div>
+            <div class="col-1"></div>
         </div>
 
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <p id="agitation-text" class="text-center">
+                    У Вас есть торговая точка, своё небольшое производство или вы предоставляете услуги оффлайн и
+                    самоизоляция угрожает Вашему бизнесу? Это решение для Вас. Подключите сервис «Заработай с ТПП», и
+                    Ваш
+                    сайт превратится в простейший электронный магазин. Покупатель может купить товар прямо на сайте, Вы
+                    увидите каждую покупку и историю продаж в своём аккаунте, деньги за продажу автоматом поступят на
+                    Ваш
+                    счёт, а чек отправится в налоговую (как при работе с онлайн-кассой).
+                </p>
+            </div>
+            <div class="col-1"></div>
+        </div>
 
         <div class="row">
             <div class="col-md-4">
-                <h2>Heading</h2>
-                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor
-                    mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada
-                    magna mollis euismod. Donec sed odio dui. </p>
-                <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+                <h2>Сайт</h2>
+                <p>Вести бизнес онлайн без сайта очень тяжело. Сайт позволит клиентам возвращаться к вам, через сайт
+                    удобно организовывать процесс оплаты, а также учёта сделок, а также сайт позволяет применять
+                    большинство инструментов продвижения Вашего онлайн-бизнеса. Если Вам необходима помощь – мы поможем
+                    с созданием сайта.</p>
+                <p><a class="btn btn-secondary" href="#" role="button">Подробнее &raquo;</a></p>
             </div>
             <div class="col-md-4">
-                <h2>Heading</h2>
-                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor
-                    mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada
-                    magna mollis euismod. Donec sed odio dui. </p>
-                <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+                <h2>Приём платежей</h2>
+                <p>Есть множество способов организовать процесс оплаты товара – наложенный платёж после доставки,
+                    наличными курьеру, в момент выдачи на складе и т.п. Для быстрого старта наиболее удобно использовать
+                    автоматизированные инструменты, когда деньги в момент покупки поступают с карточки покупателя к Вам
+                    на счёт, а чек отправляется в налоговую.</p>
+                <p><a class="btn btn-secondary" href="#" role="button">Подробнее &raquo;</a></p>
             </div>
             <div class="col-md-4">
-                <h2>Heading</h2>
-                <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id
-                    ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris
-                    condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-                <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+                <h2>Привлечение покупателей</h2>
+                <p>Вот только некоторые варианты: SEO-оптимизация сайта (улучшение сайта, чтобы он показывался в
+                    поисковике на верхних позициях – отдача возможна через несколько месяцев); контекстная реклама в
+                    Google Adwords, Yandex Direct и т.п., а также баннерная реклама Google Adwords, Yandex Direct, VK,
+                    Facebook, Одноклассники и т.п. (отдача быстрая, но стоит дороже – надо платить за каждый клик или за
+                    тысячу показов); доски объявлений – Avito, Youla, IRR и др. (есть бесплатные и платные варианты
+                    размещения объявлений); тематические форумы, например, форумы автомобилистов, строителей,
+                    рыбаков.</p>
+                <p><a class="btn btn-secondary" href="#" role="button">Подробнее &raquo;</a></p>
             </div>
         </div>
 

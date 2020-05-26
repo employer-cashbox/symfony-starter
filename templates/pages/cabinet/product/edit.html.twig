@@ -57,16 +57,15 @@
             {# Описание товара #}
             {###################}
             <div class="form-group">
+                <span class="{{ form.description.vars.errors|length > 0 ? 'text-danger' : '' }}">
+                    {{ form_label(form.description, 'Описание товара') }}
+                </span>
+
                 {% if form.description.vars.errors|length > 0 %}
                     {% set inputClass = 'form-control is-invalid' %}
                 {% else %}
                     {% set inputClass = 'form-control' %}
                 {% endif %}
-
-                <span class="{{ form.description.vars.errors|length > 0 ? 'text-danger' : '' }}">
-                        {{ form_label(form.description, 'Описание товара') }}
-                    </span>
-
                 {{ form_widget(form.description, {
                     'attr': {
                         'class': inputClass
@@ -84,9 +83,9 @@
                 {% endif %}
             </div>
 
-            {########}
-            {# Цена #}
-            {########}
+            {#################}
+            {# Цена в рублях #}
+            {#################}
             <div class="form-group">
                 {% if form.price.vars.errors|length > 0 %}
                     {% set inputClass = 'form-control is-invalid' %}
@@ -95,7 +94,7 @@
                 {% endif %}
 
                 <span class="{{ form.price.vars.errors|length > 0 ? 'text-danger' : '' }}">
-                        {{ form_label(form.price, 'Цена') }}
+                        {{ form_label(form.price, 'Цена в рублях') }}
                     </span>
 
                 {{ form_widget(form.price, {
@@ -120,6 +119,17 @@
             <button type="submit" class="btn btn-outline-dark">Сохранить</button>
 
             {{ form_end(form) }}
+
+            <textarea name="product-link-code"
+                      id="product-link-code"
+                      data-product-id="{{ product.id }}"
+                      cols="30"
+                      rows="10"
+            ></textarea>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/pages/cabinet/product/edit.js') }}"></script>
 {% endblock %}

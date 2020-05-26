@@ -71,7 +71,7 @@ class ProductController extends AbstractController
         $result = $this->productService->add($this->getUser(), $request, $form);
         if ($result) {
             $this->addFlash('success', 'Товар довален успешно');
-            return $this->redirectToRoute('route.cabinet.index');
+            return $this->redirectToRoute('route.cabinet.product.list');
         } elseif ($result === false) {
             $this->addFlash('danger', 'Произошла ошибка при добавлении товара');
         }

@@ -15,13 +15,16 @@
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
 
-            <li class="nav-item {{ app.request.get('_route') == 'route.index.index' ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('route.index.index') }}">Главная <span class="sr-only">(current)</span></a>
-            </li>
-
-            <li class="nav-item {{ app.request.get('_route') == 'route.contact.index' ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('route.contact.index') }}">Контакты</a>
-            </li>
+            {% set links = [
+                {name: 'Главная', route: 'route.index.index'},
+                {name: 'Контакты', route: 'route.contact.index'},
+                {name: 'Как начать?', route: 'route.index.how_to_start'}
+            ] %}
+            {% for link in links %}
+                <li class="nav-item {{ app.request.get('_route') == link.route ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ url(link.route) }}">{{ link.name }}</a>
+                </li>
+            {% endfor %}
         </ul>
 
         <div class="collapse navbar-collapse" id="navbarsExampleDefault" style="padding-right: 70px;">
@@ -40,40 +43,32 @@
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="dropdown01">
-                            <a class="dropdown-item {{ app.request.get('_route') == 'route.account.index' ? 'active' : '' }}"
-                               href="{{ url('route.account.index') }}">
-                                <span class="fa fa-user"></span>
-                                &nbsp;&nbsp;Мой аккаунт
-                            </a>
-                            <a class="dropdown-item {{ app.request.get('_route') == 'route.cabinet.robokassa.settings' ? 'active' : '' }}"
-                               href="{{ url('route.cabinet.robokassa.settings') }}">
-                                <span class="fa fa-robot"></span>
-                                &nbsp;&nbsp;Настройка Robokassa
-                            </a>
-                            <a class="dropdown-item {{ app.request.get('_route') == 'route.cabinet.product.list' ? 'active' : '' }}"
-                               href="{{ url('route.cabinet.product.list') }}">
-                                <span class="fa fa-list"></span>
-                                &nbsp;&nbsp;Список товаров
-                            </a>
-                            <a class="dropdown-item {{ app.request.get('_route') == 'route.cabinet.transaction.list' ? 'active' : '' }}"
-                               href="{{ url('route.cabinet.transaction.list') }}">
-                                <span class="fa fa-list-alt"></span>
-                                &nbsp;&nbsp;Список транзакций
-                            </a>
-                            <a class="dropdown-item {{ app.request.get('_route') == 'fos_user_security_logout' ? 'active' : '' }}"
-                               href="{{ path('fos_user_security_logout') }}">
-                                <span class="fa fa-door-open"></span>
-                                &nbsp;&nbsp;Выйти
-                            </a>
+                            {% set links = [
+                                {name: 'Мой аккаунт', route: 'route.account.index', icon: 'fa fa-user'},
+                                {name: 'Настройка Robokassa', route: 'route.cabinet.robokassa.settings', icon: 'fa fa-robot'},
+                                {name: 'Список товаров', route: 'route.cabinet.product.list', icon: 'fa fa-list'},
+                                {name: 'Список транзакций', route: 'route.cabinet.transaction.list', icon: 'fa fa-list-alt'},
+                                {name: 'Выйти', route: 'fos_user_security_logout', icon: 'fa fa-door-open'},
+                            ] %}
+                            {% for link in links %}
+                                <a class="dropdown-item {{ app.request.get('_route') == link.route ? 'active' : '' }}"
+                                   href="{{ url(link.route) }}">
+                                    <span class="{{ link.icon }}"></span>
+                                    &nbsp;&nbsp;{{ link.name }}
+                                </a>
+                            {% endfor %}
                         </div>
                     </li>
                 {% else %}
-                    <li class="nav-item {{ app.request.get('_route') == 'fos_user_security_login' ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ path('fos_user_security_login') }}"> Войти </a>
-                    </li>
-                    <li class="nav-item {{ app.request.get('_route') == 'fos_user_registration_register' ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ path('fos_user_registration_register') }}"> Создать аккаунт </a>
-                    </li>
+                    {% set links = [
+                        {name: 'Войти', route: 'fos_user_security_login'},
+                        {name: 'Создать аккаунт', route: 'fos_user_registration_register'},
+                    ] %}
+                    {% for link in links %}
+                        <li class="nav-item {{ app.request.get('_route') == link.route ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ path(link.route) }}"> {{ link.name }} </a>
+                        </li>
+                    {% endfor %}
                 {% endif %}
             </ul>
         </div>

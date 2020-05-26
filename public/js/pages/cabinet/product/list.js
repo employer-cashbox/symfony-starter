@@ -48,7 +48,6 @@ $(document).ready(function () {
 function deleteProductEvent(self, url) {
     let productId, productName, isDeleteProduct;
 
-    debugger;
     productId = $(self).data('productId');
     productName = $(self).data('productName');
 
@@ -62,12 +61,10 @@ function deleteProductEvent(self, url) {
             },
             success: (response, status, XHR) => {
                 console.log(`Товар [${productId}: ${productName}] успешно удален.`, response);
-                debugger;
                 location.reload();
             },
             error: (XHR, status, errorMessage) => {
                 console.error('Ошибка получения ответа с сервера', XHR, status, errorMessage);
-                debugger;
             }
         });
     }

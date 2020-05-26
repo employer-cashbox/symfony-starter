@@ -33,12 +33,6 @@ class Product
     /**
      * Название товара
      * @ORM\Column(type="string", length=255)
-     * @Assert\Regex(
-     *     pattern = "/^[0-9А-яЁёA-z-._ ]+$/i",
-     *     htmlPattern = "^[0-9А-яЁёA-z-._ ]+$",
-     *     message = "В названии товара введены не допустимые символы! (Доступны только: буквы, цифры, пробел, дефис,
-     *     точка и знак подчеркивания )"
-     * )
      * @Assert\Length(
      *      max = 255,
      *      maxMessage = "Название товара не должно превышать более {{ limit }} символов",
@@ -55,7 +49,7 @@ class Product
     private ?string $description = null;
 
     /**
-     * Цена
+     * Цена в рублях
      * @ORM\Column(type="decimal", precision=10, scale=2)
      * @Assert\Positive(
      *      message = "Значение должно быть положительным числом (больше нуля)",

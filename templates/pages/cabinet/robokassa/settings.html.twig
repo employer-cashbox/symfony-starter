@@ -11,177 +11,175 @@
         </div>
 
         <div class="col-md-12">
-            <div class="col-md-12">
-                {{ form_start(form, {
-                    'method': 'POST',
-                    'action': url('route.cabinet.robokassa.settings')
+            {{ form_start(form, {
+                'method': 'POST',
+                'action': url('route.cabinet.robokassa.settings')
+            }) }}
+
+            <div class="my-custom-class-for-errors">
+                {{ form_errors(form) }}
+            </div>
+
+            {######################################}
+            {# Идентификатор магазина в ROBOKASSA #}
+            {######################################}
+            <div class="form-group">
+                <span>{{ form_widget(form.id) }}</span>
+
+                {% if form.siteIdentity.vars.errors|length > 0 %}
+                    {% set inputClass = 'form-control is-invalid' %}
+                {% else %}
+                    {% set inputClass = 'form-control' %}
+                {% endif %}
+
+                <span class="{{ form.siteIdentity.vars.errors|length > 0 ? 'text-danger' : '' }}">
+                    {{ form_label(form.siteIdentity, 'Идентификатор магазина в ROBOKASSA') }}
+                </span>
+
+                {{ form_widget(form.siteIdentity, {
+                    'attr': {
+                        'class': inputClass
+                    }
                 }) }}
 
-                <div class="my-custom-class-for-errors">
-                    {{ form_errors(form) }}
-                </div>
-
-                {######################################}
-                {# Идентификатор магазина в ROBOKASSA #}
-                {######################################}
-                <div class="form-group">
-                    <span>{{ form_widget(form.id) }}</span>
-
-                    {% if form.siteIdentity.vars.errors|length > 0 %}
-                        {% set inputClass = 'form-control is-invalid' %}
-                    {% else %}
-                        {% set inputClass = 'form-control' %}
-                    {% endif %}
-
-                    <span class="{{ form.siteIdentity.vars.errors|length > 0 ? 'text-danger' : '' }}">
-                        {{ form_label(form.siteIdentity, 'Идентификатор магазина в ROBOKASSA') }}
-                    </span>
-
-                    {{ form_widget(form.siteIdentity, {
-                        'attr': {
-                            'class': inputClass
-                        }
-                    }) }}
-
-                    {% if form.siteIdentity.vars.errors|length > 0 %}
-                        <ul>
-                            {% for error in form.siteIdentity.vars.errors %}
-                                <p class="form-text text-danger"><small>{{ error.message }}</small></p>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <small class="form-text text-muted">{{ form_help(form.siteIdentity) }}</small>
-                    {% endif %}
-                </div>
-
-                {#############}
-                {# Пароль #1 #}
-                {#############}
-                <div class="form-group">
-                    {% if form.password1.vars.errors|length > 0 %}
-                        {% set inputClass = 'form-control is-invalid' %}
-                    {% else %}
-                        {% set inputClass = 'form-control' %}
-                    {% endif %}
-
-                    <span class="{{ form.password1.vars.errors|length > 0 ? 'text-danger' : '' }}">
-                        {{ form_label(form.password1, 'Пароль #1') }}
-                    </span>
-
-                    {{ form_widget(form.password1, {
-                        'attr': {
-                            'class': inputClass
-                        },
-                    }) }}
-
-                    {% if form.password1.vars.errors|length > 0 %}
-                        <ul>
-                            {% for error in form.password1.vars.errors %}
-                                <p class="form-text text-danger"><small>{{ error.message }}</small></p>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <small class="form-text text-muted">{{ form_help(form.password1) }}</small>
-                    {% endif %}
-                </div>
-
-                {#############}
-                {# Пароль #2 #}
-                {#############}
-                <div class="form-group">
-                    {% if form.password2.vars.errors|length > 0 %}
-                        {% set inputClass = 'form-control is-invalid' %}
-                    {% else %}
-                        {% set inputClass = 'form-control' %}
-                    {% endif %}
-
-                    <span class="{{ form.password2.vars.errors|length > 0 ? 'text-danger' : '' }}">
-                        {{ form_label(form.password2, 'Пароль #2') }}
-                    </span>
-
-                    {{ form_widget(form.password2, {
-                        'attr': {
-                            'class': inputClass
-                        },
-                    }) }}
-
-                    {% if form.password2.vars.errors|length > 0 %}
-                        <ul>
-                            {% for error in form.password2.vars.errors %}
-                                <p class="form-text text-danger"><small>{{ error.message }}</small></p>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <small class="form-text text-muted">{{ form_help(form.password2) }}</small>
-                    {% endif %}
-                </div>
-
-                {#########################}
-                {# Алгоритм расчета хеша #}
-                {#########################}
-                <div class="form-group">
-                    {% if form.hashCalculationAlgorithm.vars.errors|length > 0 %}
-                        {% set inputClass = 'form-control is-invalid' %}
-                    {% else %}
-                        {% set inputClass = 'form-control' %}
-                    {% endif %}
-
-                    <span class="{{ form.hashCalculationAlgorithm.vars.errors|length > 0 ? 'text-danger' : '' }}">
-                        {{ form_label(form.hashCalculationAlgorithm, 'Алгоритм расчета хеша') }}
-                    </span>
-
-                    {{ form_widget(form.hashCalculationAlgorithm, {
-                        'attr': {
-                            'class': inputClass
-                        },
-                    }) }}
-
-                    {% if form.hashCalculationAlgorithm.vars.errors|length > 0 %}
-                        <ul>
-                            {% for error in form.hashCalculationAlgorithm.vars.errors %}
-                                <p class="form-text text-danger"><small>{{ error.message }}</small></p>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <small class="form-text text-muted">{{ form_help(form.hashCalculationAlgorithm) }}</small>
-                    {% endif %}
-                </div>
-
-                {##########################}
-                {# Номер счета в магазине #}
-                {##########################}
-                <div class="form-group">
-                    {% if form.invoiceId.vars.errors|length > 0 %}
-                        {% set inputClass = 'form-control is-invalid' %}
-                    {% else %}
-                        {% set inputClass = 'form-control' %}
-                    {% endif %}
-
-                    <span class="{{ form.invoiceId.vars.errors|length > 0 ? 'text-danger' : '' }}">
-                        {{ form_label(form.invoiceId, 'Номер счета в магазине') }}
-                    </span>
-
-                    {{ form_widget(form.invoiceId, {
-                        'attr': {
-                            'class': inputClass
-                        },
-                    }) }}
-
-                    {% if form.invoiceId.vars.errors|length > 0 %}
-                        <ul>
-                            {% for error in form.invoiceId.vars.errors %}
-                                <p class="form-text text-danger"><small>{{ error.message }}</small></p>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <small class="form-text text-muted">{{ form_help(form.invoiceId) }}</small>
-                    {% endif %}
-                </div>
-
-                <button type="submit" class="btn btn-outline-dark">Сохранить</button>
-
-                {{ form_end(form) }}
+                {% if form.siteIdentity.vars.errors|length > 0 %}
+                    <ul>
+                        {% for error in form.siteIdentity.vars.errors %}
+                            <p class="form-text text-danger"><small>{{ error.message }}</small></p>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <small class="form-text text-muted">{{ form_help(form.siteIdentity) }}</small>
+                {% endif %}
             </div>
+
+            {#############}
+            {# Пароль #1 #}
+            {#############}
+            <div class="form-group">
+                {% if form.password1.vars.errors|length > 0 %}
+                    {% set inputClass = 'form-control is-invalid' %}
+                {% else %}
+                    {% set inputClass = 'form-control' %}
+                {% endif %}
+
+                <span class="{{ form.password1.vars.errors|length > 0 ? 'text-danger' : '' }}">
+                    {{ form_label(form.password1, 'Пароль #1') }}
+                </span>
+
+                {{ form_widget(form.password1, {
+                    'attr': {
+                        'class': inputClass
+                    },
+                }) }}
+
+                {% if form.password1.vars.errors|length > 0 %}
+                    <ul>
+                        {% for error in form.password1.vars.errors %}
+                            <p class="form-text text-danger"><small>{{ error.message }}</small></p>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <small class="form-text text-muted">{{ form_help(form.password1) }}</small>
+                {% endif %}
+            </div>
+
+            {#############}
+            {# Пароль #2 #}
+            {#############}
+            <div class="form-group">
+                {% if form.password2.vars.errors|length > 0 %}
+                    {% set inputClass = 'form-control is-invalid' %}
+                {% else %}
+                    {% set inputClass = 'form-control' %}
+                {% endif %}
+
+                <span class="{{ form.password2.vars.errors|length > 0 ? 'text-danger' : '' }}">
+                    {{ form_label(form.password2, 'Пароль #2') }}
+                </span>
+
+                {{ form_widget(form.password2, {
+                    'attr': {
+                        'class': inputClass
+                    },
+                }) }}
+
+                {% if form.password2.vars.errors|length > 0 %}
+                    <ul>
+                        {% for error in form.password2.vars.errors %}
+                            <p class="form-text text-danger"><small>{{ error.message }}</small></p>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <small class="form-text text-muted">{{ form_help(form.password2) }}</small>
+                {% endif %}
+            </div>
+
+            {#########################}
+            {# Алгоритм расчета хеша #}
+            {#########################}
+            <div class="form-group">
+                {% if form.hashCalculationAlgorithm.vars.errors|length > 0 %}
+                    {% set inputClass = 'form-control is-invalid' %}
+                {% else %}
+                    {% set inputClass = 'form-control' %}
+                {% endif %}
+
+                <span class="{{ form.hashCalculationAlgorithm.vars.errors|length > 0 ? 'text-danger' : '' }}">
+                    {{ form_label(form.hashCalculationAlgorithm, 'Алгоритм расчета хеша') }}
+                </span>
+
+                {{ form_widget(form.hashCalculationAlgorithm, {
+                    'attr': {
+                        'class': inputClass
+                    },
+                }) }}
+
+                {% if form.hashCalculationAlgorithm.vars.errors|length > 0 %}
+                    <ul>
+                        {% for error in form.hashCalculationAlgorithm.vars.errors %}
+                            <p class="form-text text-danger"><small>{{ error.message }}</small></p>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <small class="form-text text-muted">{{ form_help(form.hashCalculationAlgorithm) }}</small>
+                {% endif %}
+            </div>
+
+            {##########################}
+            {# Номер счета в магазине #}
+            {##########################}
+            <div class="form-group">
+                {% if form.invoiceId.vars.errors|length > 0 %}
+                    {% set inputClass = 'form-control is-invalid' %}
+                {% else %}
+                    {% set inputClass = 'form-control' %}
+                {% endif %}
+
+                <span class="{{ form.invoiceId.vars.errors|length > 0 ? 'text-danger' : '' }}">
+                    {{ form_label(form.invoiceId, 'Номер счета в магазине') }}
+                </span>
+
+                {{ form_widget(form.invoiceId, {
+                    'attr': {
+                        'class': inputClass
+                    },
+                }) }}
+
+                {% if form.invoiceId.vars.errors|length > 0 %}
+                    <ul>
+                        {% for error in form.invoiceId.vars.errors %}
+                            <p class="form-text text-danger"><small>{{ error.message }}</small></p>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <small class="form-text text-muted">{{ form_help(form.invoiceId) }}</small>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-outline-dark">Сохранить</button>
+
+            {{ form_end(form) }}
         </div>
     </div>
 {% endblock %}

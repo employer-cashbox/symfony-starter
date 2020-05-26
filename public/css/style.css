@@ -1,10 +1,21 @@
-
 body {
     font-family: "HelveticaNeue-CondensedBold", "Helvetica Neue", Arial, sans-serif;
     font-weight: 400;
     line-height: 1.5;
     color: #212529 !important;
     position: relative;
+}
+
+#logo img {
+    max-width: 100%;
+    border-radius: 30px;
+}
+
+#agitation-text {
+    font-size: 23px;
+    font-weight: normal;
+    line-height: 1.5;
+    color: #444;
 }
 
 .title_header {
