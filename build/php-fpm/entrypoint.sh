@@ -19,8 +19,14 @@ if [[ ! -z ${MYSQL_USER} ]]; then
 fi
 echo "MYSQL_CREDENTIAL: ${MYSQL_CREDENTIAL}"
 
+APP_DEBUG=0
+if [[ ${MYSQL_APP_ENV == 'dev'} ]]; then
+    APP_DEBUG=1
+fi
+
 cp ./.env.dist './.env' && chmod 777 './.env'
 sed -i "s/^APP_ENV=/APP_ENV=${APP_ENV}/" './.env'
+sed -i "s/^APP_DEBUG=/APP_DEBUG=${APP_DEBUG}/" './.env'
 sed -i "s/^APP_SECRET=/APP_SECRET=${RANDOM_STRING}/" './.env'
 sed -i "s,^DATABASE_URL=,DATABASE_URL=mysql://${MYSQL_CREDENTIAL}employer-cashbox-mysql:3306/${MYSQL_DATABASE}," './.env'
 sed -i "s/^LOCALE=/LOCALE=ru_Ru/" './.env'
